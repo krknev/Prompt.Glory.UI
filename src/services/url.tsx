@@ -1,0 +1,29 @@
+export class ApiUrls {
+   static baseUrl = "https://localhost:7055/";
+   static signIn = "auth/signin";
+   static confirmSignIn = "auth/signin/confirm";
+   static refreshSignIn = "auth/signin/refresh";
+   static signUp = "auth/signup";
+   static reviewsAll = "review/all";
+   static reviewsEdit = "review/edit";
+   static reviewsDelete = "review/delete";
+   static reviewsCreate = "review/add";
+   static marketPlaceAll = "marketplace/all";
+   static marketPlaceDetail = "marketplace/";
+   static marketPlaceCreateItem = "marketplace/add-item";
+   static marketPlaceEditItem = "marketplace/edit-item";
+   static marketPlaceDeleteItem = "marketplace/delete-item";
+   static contestsAll = "contests/all";
+   static contestDetail = "contests/";
+   static contestVote = "contests/vote";
+   static contestCreate = "contests/add";
+   static contestEdit = "contests/edit";
+   static contestDelete = "contests/delete/";
+   static contacts = "contact"
+   static emailUs = "contact/email-us"
+   static blogsAll = "blog/all";
+   static blogDetail = "blog/";
+   static blogCreate  = "blog/add";
+   static blogEdit = "blog/edit";
+   static blogDelete = "blog/delete/";
+}

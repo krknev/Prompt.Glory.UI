@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional custom theme vars */
+:root {
+  --background-light: #f9fafb;
+  --background-dark: #111827;
+}
+
+body {
+  @apply antialiased;
+}
