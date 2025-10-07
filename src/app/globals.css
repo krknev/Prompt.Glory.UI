@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional custom theme vars */
+/* CSS variables (used in tailwind.config.js) */
 :root {
   --background-light: #f9fafb;
   --background-dark: #111827;
+  --text-light: #1f2937;
+  --text-dark: #f3f4f6;
 }
 
 body {
