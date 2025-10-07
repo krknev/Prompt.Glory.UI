@@ -1,9 +1,9 @@
 import React from 'react';
-import { Share2, Expand, Heart } from 'lucide-react';
-import { ProductCard } from '../ProductCard';
+import { Heart } from 'lucide-react';
 import { ContestCard } from '../cards/ContestCard';
 
 export function WeeklyWinnersSection() {
+
   const winners = [
     {
       id: 1,
@@ -73,7 +73,7 @@ export function WeeklyWinnersSection() {
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gray-900 dark:text-white">
           Top 5 Weekly Winners
         </h2>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
           {winners.map((winner) => (
             <ContestCard
