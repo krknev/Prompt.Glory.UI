@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { GlassButton } from '../elements/GlassButton';
+import  GlassButton   from '../btns/GlassButton';
 
 interface HeroSectionProps {
   onNavigate?: (page: string, prompt?: string) => void;

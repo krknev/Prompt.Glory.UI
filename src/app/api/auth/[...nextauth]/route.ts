@@ -5,7 +5,7 @@ import { ApiUrls } from "@/services/url";
 import { ApiResponse } from "@/types/ApiResponse";
 import { SignInRequest, SignInResponse } from "@/types/auth";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",

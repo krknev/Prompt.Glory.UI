@@ -1,187 +1,145 @@
-import React, { useState } from 'react';
-import { Heart, Share2, Expand, ShoppingCart, Star } from 'lucide-react';
-import { ArtworkLightboxModal } from '../modals/ArtworkLightboxModal';
+import React, { useState, useEffect } from 'react';
+import { Calendar, Trophy, Share2 } from 'lucide-react';
+import  ContestRulesCard  from '../cards/ContestRulesCard';
+import  GlassButton  from '../btns/GlassButton';
 
 interface ContestCardProps {
-  artwork: {
+  contest: {
     id: number;
     title: string;
-    artist: string;
-    price: string;
-    rating: number;
-    likes: number;
+    description: string;
     image: string;
-    prompt?: string;
-    promptPrice?: string;
+    prizePool: string;
+    timeLeft: {
+      days: number;
+      hours: number;
+      minutes: number;
+      seconds: number;
+    };
+    participants: number;
+    status: 'active' | 'upcoming' | 'ended';
   };
-  onExpandContestEntry?: (artwork: any) => void;
-  lightboxConfig?: {
-    showPurchaseOptions?: boolean;
-    showVoteButton?: boolean;
-    showAddToCart?: boolean;
-    showHireCreator?: boolean;
-    showDownload?: boolean;
-    customButtons?: Array<{
-      label: string;
-      icon: React.ReactNode;
-      onClick: (artwork: any) => void;
-      variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-    }>;
-  };
+  onViewContest: (contest: any) => void;
 }
 
-export function ContestCard({ artwork, onExpandContestEntry, lightboxConfig }: ContestCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(artwork.likes);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showShareMenu, setShowShareMenu] = useState(false);
+export default function ContestCard({ contest, onViewContest }: ContestCardProps) {
+  const [showRules, setShowRules] = useState(false);
 
-  const handleLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked(!isLiked);
-    setLikes(prev => isLiked ? prev - 1 : prev + 1);
-  };
+  // Use timeLeft directly from props (managed by parent component)
+  const timeLeft = contest.timeLeft;
 
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowShareMenu(!showShareMenu);
-  };
-
-  const handleExpand = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onExpandContestEntry) {
-      onExpandContestEntry(artwork);
-    } else {
-      setIsExpanded(true);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'upcoming': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'ended': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      default: return 'bg-primary/20 text-primary border-primary/30';
     }
   };
-
-  const handleLikeToggle = () => {
-    setIsLiked(!isLiked);
-    setLikes(prev => isLiked ? prev - 1 : prev + 1);
-  };
-
-  const shareOptions = [
-    {
-      name: 'Copy Link',
-      icon: '🔗',
-      action: () => navigator.clipboard.writeText(window.location.href)
-    }
-  ];
 
   return (
-    <>
-      <div className="relative rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-1 group">
-        <div className="relative overflow-hidden">
-          <img
-            src={artwork.image}
-            alt={artwork.title}
-            className="w-full h-48 sm:h-64 lg:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          
-          {/* Overlay Controls */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300">
-            <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              {/* Like Button */}
-              <button
-                onClick={handleLike}
-                className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
-                  isLiked 
-                    ? 'bg-red-500/90 text-white' 
-                    : 'bg-black/50 text-white hover:bg-red-500/90'
-                }`}
-              >
-                <Heart size={14} className={`sm:w-4 sm:h-4 ${isLiked ? 'fill-current' : ''}`} />
-              </button>
+    <div className="relative min-h-[600px] w-full overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-1 group">
+      {/* Background image with smooth zoom on hover */}
+      <img
+        src={contest.image}
+        alt={contest.title}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      />
 
-              {/* Share Button */}
-              <div className="relative">
-                <button
-                  onClick={handleShare}
-                  className="p-2 rounded-full bg-black/50 text-white hover:bg-primary/90 backdrop-blur-sm transition-all duration-300"
-                >
-                  <Share2 size={14} className="sm:w-4 sm:h-4" />
-                </button>
-                
-                {/* Share Menu */}
-                {showShareMenu && (
-                  <div className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 min-w-[120px] z-50">
-                    {shareOptions.map((option) => (
-                      <button
-                        key={option.name}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          option.action();
-                          setShowShareMenu(false);
-                        }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-sm"
-                      >
-                        <span>{option.icon}</span>
-                        {option.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+      {/* Readability overlays (always on) */}
+      {/* Soft dark veil that slightly increases on hover */}
+      <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/35" />
+      {/* Gradient from bottom for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#171121] via-[#171121]/70 to-transparent pointer-events-none" />
 
-              {/* Expand Button */}
-              <button
-                onClick={handleExpand}
-                className="p-2 rounded-full bg-black/50 text-white hover:bg-primary/90 backdrop-blur-sm transition-all duration-300"
-              >
-                <Expand size={14} className="sm:w-4 sm:h-4" />
-              </button>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-end h-full p-4 sm:p-6 text-center">
+        {/* Status */}
+        <div className="absolute top-4 left-4">
+          <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-sm ${getStatusColor(contest.status)}`}>
+            {contest.status.charAt(0).toUpperCase() + contest.status.slice(1)}
+          </div>
+        </div>
+
+        {/* Prize */}
+        <div className="absolute top-4 right-4">
+          <div className="glassmorphism px-3 py-1 rounded-lg">
+            <div className="flex items-center gap-1 text-yellow-400">
+              <Trophy size={14} />
+              <span className="text-xs sm:text-sm font-bold text-white">{contest.prizePool}</span>
             </div>
           </div>
-          
-          {/* Information overlay - shows on hover */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-3 sm:p-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-            <h3 className="text-base sm:text-lg font-bold text-white mb-1">
-              {artwork.title}
-            </h3>
-            <p className="text-xs sm:text-sm text-white/80 mb-3">
-              by {artwork.artist}
-            </p>
-            
-            <div className="flex items-center justify-between mb-4">
-              {artwork.rating && (
-                <div className="flex items-center gap-1">
-                  <Star className="text-yellow-400 fill-current" size={12} />
-                  <span className="text-sm font-medium text-white">{artwork.rating}</span>
-                </div>
-              )}
-              <div className="flex items-center gap-1 text-white/80">
-                <Heart size={12} className={isLiked ? 'fill-current text-red-500' : ''} />
-                <span className="text-sm">{likes}</span>
+        </div>
+
+        {/* Title + Desc */}
+        <div className="mb-6">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-white drop-shadow mb-2">
+            {contest.title}
+          </h1>
+          <p className="text-xs sm:text-sm lg:text-base text-white/85 max-w-md mx-auto line-clamp-2">
+            {contest.description}
+          </p>
+        </div>
+
+        {/* Countdown */}
+        <div className="mb-6 flex justify-center gap-1 sm:gap-2 lg:gap-3">
+          {[
+            { label: 'Days', val: String(timeLeft.days).padStart(2, '0') },
+            { label: 'Hours', val: String(timeLeft.hours).padStart(2, '0') },
+            { label: 'Min', val: String(timeLeft.minutes).padStart(2, '0') },
+            { label: 'Sec', val: String(timeLeft.seconds).padStart(2, '0'), pulse: true },
+          ].map(({ label, val, pulse }) => (
+            <div key={label} className="flex flex-col items-center">
+              <div className="glassmorphism flex h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 items-center justify-center rounded-lg">
+                <p className={`text-sm sm:text-lg lg:text-2xl font-bold text-white ${pulse ? 'animate-pulse' : ''}`}>{val}</p>
               </div>
+              <p className="mt-1 text-xs font-medium text-white/75 uppercase tracking-widest">{label}</p>
             </div>
-            
-            <div className="flex items-center justify-between">
-              <span className="text-sm sm:text-lg font-bold text-primary">
-                {artwork.price || 'Contest Entry'}
-              </span>
-              <button 
-                onClick={handleExpand}
-                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-white rounded-lg hover:bg-primary/90 hover:glow transition-all duration-300 text-xs sm:text-sm font-bold"
-              >
-                <Expand size={14} />
-                <span className="hidden sm:inline">View Details</span>
-                <span className="sm:hidden">View</span>
-              </button>
-            </div>
+          ))}
+        </div>
+
+        {/* Info */}
+        <div className="mb-6 flex flex-wrap justify-center gap-2">
+          <div className="glassmorphism flex-grow rounded-lg p-2 sm:p-3 text-center min-w-[70px] sm:min-w-[80px] max-w-[100px] sm:max-w-[120px]">
+            <p className="text-xs font-medium text-white/80">Participants</p>
+            <p className="text-xs sm:text-sm lg:text-lg font-bold text-white mt-1">{contest.participants}</p>
+          </div>
+          <div className="glassmorphism flex-grow rounded-lg p-2 sm:p-3 text-center min-w-[70px] sm:min-w-[80px] max-w-[100px] sm:max-w-[120px]">
+            <p className="text-xs font-medium text-white/80">Status</p>
+            <p className="text-xs sm:text-sm lg:text-lg font-bold text-primary mt-1 capitalize">{contest.status}</p>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex justify-center items-center">
+          <GlassButton
+            onClick={() => onViewContest(contest)}
+            className="w-full sm:w-auto min-w-[140px] sm:min-w-[160px] h-10 sm:h-12 px-4 sm:px-6 text-xs sm:text-sm tracking-wide hover:scale-105 flex items-center justify-center"
+          >
+            <Calendar size={16} className="mr-2" />
+            <span className="truncate">Join Contest</span>
+          </GlassButton>
+        </div>
+
+        {/* Share */}
+        <div className="mt-4 flex justify-center items-center gap-3">
+          <p className="text-xs font-medium text-white/75">Share:</p>
+          <div className="flex items-center gap-2">
+            <button className="group flex items-center justify-center rounded-full size-8 bg-primary/20 dark:bg-primary/30 hover:bg-primary/40 transition-colors">
+              <Share2 className="text-white" size={14} />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Use the extracted Lightbox Modal */}
-      <ArtworkLightboxModal
-        isOpen={isExpanded}
-        onClose={() => setIsExpanded(false)}
-        artwork={artwork}
-        isLiked={isLiked}
-        onLike={handleLikeToggle}
-        lightboxConfig={lightboxConfig}
-      />
-    </>
+      {/* Contest Rules Modal */}
+      {showRules && (
+        <ContestRulesCard
+          isModal={true}
+          contestTitle={contest.title}
+          onClose={() => setShowRules(false)}
+        />
+      )}
+    </div>
   );
 }

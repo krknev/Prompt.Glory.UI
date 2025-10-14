@@ -36,18 +36,18 @@ export function Header({
 
   // Links that are always public
   const publicLinks = [
-    { label: "Home", page: "home", icon: "🏠" },
-    { label: "Contests", page: "contests", icon: "🏆" },
-    { label: "Marketplace", page: "marketplace", icon: "🛒" },
+    { label: "Home", page: "/", icon: "🏠" },
+    { label: "Contests", page: "/contests/all", icon: "🏆" },
+    { label: "Marketplace", page: "/marketplace", icon: "🛒" },
   ];
 
   // Links only for authenticated users
   const privateLinks = [
-    { label: "Creators", page: "creators", icon: "👨‍🎨" },
-    { label: "Explore", page: "explore", icon: "🔍" },
-    { label: "Polls", page: "polls", icon: "🗳️" },
-    { label: "Hire Creator", page: "hire-creator", icon: "💼" },
-    { label: "Create", page: "create", icon: "✨" },
+    { label: "Creators", page: "/creators/all", icon: "👨‍🎨" },
+    { label: "Explore", page: "/explore", icon: "🔍" },
+    { label: "Polls", page: "/polls/all", icon: "🗳️" },
+    { label: "Hire Creator", page: "/creators/hire", icon: "💼" },
+    { label: "Create", page: "/user/create", icon: "✨" },
   ];
 
   return (
@@ -148,7 +148,7 @@ export function Header({
               <>
                 {/* User Dashboard */}
                 <button
-                  onClick={() => onNavigate("dashboard")}
+                  onClick={() => onNavigate("/user/dashboard")}
                   className={`w-full flex items-center rounded-xl bg-violet-600/10 text-violet-600 hover:bg-violet-600/20 transition-all duration-200 font-medium relative group ${sidebarCollapsed ? "justify-center px-3 py-3" : "gap-3 px-4 py-3"
                     }`}
                 >
@@ -156,7 +156,7 @@ export function Header({
                   {!sidebarCollapsed && <span>User Dashboard</span>}
                 </button>
 
-                {/* Admin Dashboard */}
+                {/* Admin Dashboard 
                 <button
                   onClick={() => onNavigate("admin")}
                   className={`w-full flex items-center rounded-xl bg-orange-600/10 text-orange-600 hover:bg-orange-600/20 transition-all duration-200 font-medium relative group ${sidebarCollapsed ? "justify-center px-3 py-3" : "gap-3 px-4 py-3"
@@ -164,7 +164,7 @@ export function Header({
                 >
                   <span className="text-lg">⚙️</span>
                   {!sidebarCollapsed && <span>Admin Dashboard</span>}
-                </button>
+                </button>*/}
 
                 {/* Upload */}
                 <button

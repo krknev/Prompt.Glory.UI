@@ -99,7 +99,7 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
-export function ArtworkLightboxModal({ 
+export default function ArtworkLightboxModal({ 
   isOpen, 
   onClose, 
   artwork, 

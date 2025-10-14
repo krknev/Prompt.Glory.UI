@@ -1,3 +1,4 @@
+"use client";
  
 import { useEffect, useState } from 'react'; 
 import { useAuth } from '../hooks/useAuth';
@@ -10,7 +11,6 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignUpModal, setSignUpModal] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -47,9 +47,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
         </div>
         <LoginModal
           isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-            onShowSignUpModal={setShowLoginModal}
-             onShowLoginModal={setSignUpModal}
+          onClose={() => setShowLoginModal(false)} 
+            onShowSignUpModal={() => setShowLoginModal(false)} 
+            onShowLoginModal={()=>console.log()}
         />
       </>
     );
