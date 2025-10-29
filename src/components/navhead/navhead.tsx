@@ -49,7 +49,7 @@ export function Header({
     { label: "Hire Creator", page: "/creators/hire", icon: "💼" },
     { label: "Create", page: "/user/create", icon: "✨" },
   ];
-
+ 
   return (
     <>
       {/* Sidebar */}
@@ -126,13 +126,13 @@ export function Header({
                 className={`w-full flex items-center rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 relative group ${sidebarCollapsed ? "justify-center px-3 py-3" : "gap-3 px-4 py-3"
                   }`}
               >
-                <span className="text-lg">{theme === "dark" ? "🌙" : "☀️"}</span>
+                <span className="text-lg">{theme === "light" ? "🌙" : "☀️"}</span>
                 {!sidebarCollapsed && (
-                  <span className="font-medium">{theme === "dark" ? "Dark Mode" : "Light Mode"}</span>
+                  <span className="font-medium">{theme === "light" ? "Dark Mode" : "Light Mode"}</span>
                 )}
                 {sidebarCollapsed && (
                   <div className="absolute left-full ml-2 px-3 py-2 bg-slate-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                    {theme === "dark" ? "Dark Mode" : "Light Mode"}
+                    {theme === "light" ? "Dark Mode" : "Light Mode"}
                   </div>
                 )}
               </button>
@@ -252,9 +252,9 @@ export function Header({
             <button
               onClick={onToggleTheme}
               className="flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
             >
-              {theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
             </button>
 
             {isAuthenticated && (

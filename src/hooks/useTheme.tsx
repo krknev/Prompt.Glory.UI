@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext,useContext,useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = "light" | "dark";
 
@@ -8,32 +8,46 @@ interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
 }
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
- 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
 
-  // Load from localStorage on mount
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize on mount
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-      document.documentElement.classList.toggle("dark", storedTheme === "dark");
-    } else {
-      // default: follow system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", prefersDark);
-    }
+    setMounted(true);
+    applyTheme(theme);
   }, []);
+
+  // Apply theme whenever it changes
+  useEffect(() => {
+    if (mounted) {
+      applyTheme(theme);
+    }
+  }, [theme, mounted]);
+
+  // Apply theme to DOM
+  const applyTheme = (newTheme: Theme) => {
+    const root = document.documentElement;
+     
+    root.classList.remove(newTheme =="light"? "dark": "light");
+     
+    root.classList.add(newTheme);
+     
+  };
 
   // Toggle function
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    console.log("togle")
+    setTheme((prevTheme) => prevTheme === "dark" ? "light" : "dark");
   };
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
