@@ -50,9 +50,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <html lang="en">
-      <body className="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 min-h-screen">
-        <Header
+    <>
+      <Header
           onToggleTheme={toggleTheme}
           currentPage={currentPage}
           onNavigate={handleNavigate}
@@ -98,7 +97,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             onShowSignUpModal={setShowSignUpModal}
           />
         )}
-      </body>
-    </html>
+      </>
   );
 }

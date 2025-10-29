@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Trophy, Share2 } from 'lucide-react';
-import  ContestRulesCard  from '../cards/ContestRulesCard';
-import  GlassButton  from '../btns/GlassButton';
+import ContestRulesCard from '../cards/ContestRulesCard';
+import GlassButton from '../btns/GlassButton';
+import { UserRole } from '@/types/user';
 
 interface ContestCardProps {
   contest: {
@@ -18,8 +19,9 @@ interface ContestCardProps {
     };
     participants: number;
     status: 'active' | 'upcoming' | 'ended';
+    userRole: UserRole
   };
-  onViewContest: (contest: any) => void;
+  onViewContest: (contest: string) => void;
 }
 
 export default function ContestCard({ contest, onViewContest }: ContestCardProps) {
@@ -113,11 +115,11 @@ export default function ContestCard({ contest, onViewContest }: ContestCardProps
         {/* Actions */}
         <div className="flex justify-center items-center">
           <GlassButton
-            onClick={() => onViewContest(contest)}
+            onClick={() => onViewContest(contest.id + "")}
             className="w-full sm:w-auto min-w-[140px] sm:min-w-[160px] h-10 sm:h-12 px-4 sm:px-6 text-xs sm:text-sm tracking-wide hover:scale-105 flex items-center justify-center"
           >
             <Calendar size={16} className="mr-2" />
-            <span className="truncate">Join Contest</span>
+            <span className="truncate">{contest.userRole === 'admin' ? 'View' : 'Join'} Contest</span>
           </GlassButton>
         </div>
 

@@ -8,8 +8,8 @@ interface ProductCardProps {
     id: number;
     title: string;
     artist: string;
-    price: string;
-    rating: number;
+    price: string | undefined;
+    rating: number | undefined;
     likes: number;
     image: string;
     prompt?: string;
@@ -79,18 +79,17 @@ export function ProductCard({ artwork, onExpandContestEntry, lightboxConfig }: P
             alt={artwork.title}
             className="w-full h-48 sm:h-64 lg:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
           />
-          
+
           {/* Overlay Controls */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300">
             <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               {/* Like Button */}
               <button
                 onClick={handleLike}
-                className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
-                  isLiked 
-                    ? 'bg-red-500/90 text-white' 
+                className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${isLiked
+                    ? 'bg-red-500/90 text-white'
                     : 'bg-black/50 text-white hover:bg-red-500/90'
-                }`}
+                  }`}
               >
                 <Heart size={14} className={`sm:w-4 sm:h-4 ${isLiked ? 'fill-current' : ''}`} />
               </button>
@@ -103,7 +102,7 @@ export function ProductCard({ artwork, onExpandContestEntry, lightboxConfig }: P
                 >
                   <Share2 size={14} className="sm:w-4 sm:h-4" />
                 </button>
-                
+
                 {/* Share Menu */}
                 {showShareMenu && (
                   <div className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 min-w-[120px] z-50">
@@ -134,7 +133,7 @@ export function ProductCard({ artwork, onExpandContestEntry, lightboxConfig }: P
               </button>
             </div>
           </div>
-          
+
           {/* Information overlay - shows on hover */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-3 sm:p-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
             <h3 className="text-base sm:text-lg font-bold text-white mb-1">
@@ -143,7 +142,7 @@ export function ProductCard({ artwork, onExpandContestEntry, lightboxConfig }: P
             <p className="text-xs sm:text-sm text-white/80 mb-3">
               by {artwork.artist}
             </p>
-            
+
             <div className="flex items-center justify-between mb-4">
               {artwork.rating && (
                 <div className="flex items-center gap-1">
@@ -156,12 +155,12 @@ export function ProductCard({ artwork, onExpandContestEntry, lightboxConfig }: P
                 <span className="text-sm">{likes}</span>
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <span className="text-sm sm:text-lg font-bold text-primary">
                 {artwork.price || 'Contest Entry'}
               </span>
-              <button 
+              <button
                 onClick={handleExpand}
                 className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-white rounded-lg hover:bg-primary/90 hover:glow transition-all duration-300 text-xs sm:text-sm font-bold"
               >

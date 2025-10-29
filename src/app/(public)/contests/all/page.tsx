@@ -1,16 +1,16 @@
-  "use client";
+"use client";
 import React from 'react';
 import { useState, useEffect } from 'react';
-import  ContestCard  from '@/components/cards/ContestCard';
+import ContestCard from '@/components/cards/ContestCard';
 import { Trophy, Calendar, Users } from 'lucide-react';
 
 interface ContestsPageProps {
   onNavigate: (page: string, details?: any) => void;
 }
 
-export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
+export default function ContestsPage({ onNavigate }: ContestsPageProps) {
   // Initialize contest times state
-  const [contestTimeLefts, setContestTimeLefts] = useState<{[key: number]: {days: number, hours: number, minutes: number, seconds: number}}>({});
+  const [contestTimeLefts, setContestTimeLefts] = useState<{ [key: number]: { days: number, hours: number, minutes: number, seconds: number } }>({});
 
   const activeContests = [
     {
@@ -77,7 +77,7 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
 
   // Initialize contest times on component mount
   useEffect(() => {
-    const initialTimes: {[key: number]: {days: number, hours: number, minutes: number, seconds: number}} = {};
+    const initialTimes: { [key: number]: { days: number, hours: number, minutes: number, seconds: number } } = {};
     activeContests.forEach(contest => {
       initialTimes[contest.id] = { ...contest.timeLeft };
     });
@@ -89,11 +89,11 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
     const timer = setInterval(() => {
       setContestTimeLefts(prev => {
         const updated = { ...prev };
-        
+
         Object.keys(updated).forEach(contestIdStr => {
           const contestId = parseInt(contestIdStr);
           let { days, hours, minutes, seconds } = updated[contestId];
-          
+
           if (seconds > 0) {
             seconds--;
           } else if (minutes > 0) {
@@ -109,10 +109,10 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
             minutes = 59;
             seconds = 59;
           }
-          
+
           updated[contestId] = { days, hours, minutes, seconds };
         });
-        
+
         return updated;
       });
     }, 1000);
@@ -121,7 +121,7 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
   }, []);
 
   const handleViewContest = (contest: any) => {
-     onNavigate('singleContest', contest);
+    onNavigate('singleContest', contest);
   };
 
   return (
@@ -166,7 +166,7 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
               <ContestCard
                 key={contest.id}
                 contest={{
-                  ...contest,
+                  ...contest, userRole: "both",
                   timeLeft: contestTimeLefts[contest.id] || contest.timeLeft
                 }}
                 onViewContest={handleViewContest}
@@ -185,7 +185,7 @@ export default function ContestsPage({ onNavigate  }: ContestsPageProps) {
               <ContestCard
                 key={contest.id}
                 contest={{
-                  ...contest,
+                  ...contest, userRole: "both",
                   timeLeft: contestTimeLefts[contest.id] || contest.timeLeft
                 }}
                 onViewContest={handleViewContest}
